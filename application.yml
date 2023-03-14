@@ -4,6 +4,10 @@ metadata:
   name: postgres
 spec:
   postgresVersion: 14
+  proxy:
+    pgBouncer:
+      port: 5432
+      replicas: 2
   instances:
     - name: instance1
       replicas: 3
