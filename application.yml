@@ -8,7 +8,7 @@ spec:
     - name: instance1
       replicas: 3
       dataVolumeClaimSpec:
-        storageClassName: openebs-hostpath
+        storageClassName: postgres
         accessModes:
           - "ReadWriteOnce"
         resources:
@@ -23,7 +23,20 @@ spec:
                 postgres-operator.crunchydata.com/cluster: postgres
   backups:
     pgbackrest:
-      repos: []
+      global:
+        repo1-retention-full: '1'
+        repo1-retention-full-type: time
+      repos:
+        - name: repo1
+          schedules:
+            full: 0 * * * *
+          volume:
+            volumeClaimSpec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 2Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
